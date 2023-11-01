@@ -22,7 +22,7 @@ config.vm.define :balanceador do |balanceador|
     apache1.vm.network :private_network,
           :libvirt__network_name => "red_privada1",
           :libvirt__dhcp_enabled => false,
-          :ip => "10.0.0.11",
+          :ip => "10.10.10.11",
           :libvirt__forward_mode => "veryisolated"
     apache1.vm.provision "shell", run: "always", inline: <<-SHELL
         ip r del default
@@ -40,7 +40,7 @@ config.vm.define :balanceador do |balanceador|
     apache2.vm.network :private_network,
           :libvirt__network_name => "red_privada1",
           :libvirt__dhcp_enabled => false,
-          :ip => "10.0.0.11",
+          :ip => "10.10.10.22",
           :libvirt__forward_mode => "veryisolated"
     apache2.vm.provision "shell", run: "always", inline: <<-SHELL
         ip r del default
