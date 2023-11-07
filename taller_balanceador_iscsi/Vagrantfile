@@ -69,6 +69,11 @@ config.vm.define :balanceador do |balanceador|
       libvirt.memory = 512
       libvirt.cpus = 1
     end
+    san.vm.provider :libvirt do |libvirt|
+      libvirt.storage :file, :size => '1G'
+      libvirt.storage :file, :size => '2G'
+      libvirt.storage :file, :size => '3G'
+    end
   end
   
 end
