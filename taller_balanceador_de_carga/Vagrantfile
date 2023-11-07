@@ -11,10 +11,11 @@ config.vm.define :balanceador do |balanceador|
           :libvirt__dhcp_enabled => false,
           :ip => "10.10.10.1",
           :libvirt__forward_mode => "veryisolated"
-    balanceador.vm.provision "shell", run: "always", inline: <<-SHELL
-      sysctl -w net.ipv4.ip_forward=1
-      iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -j MASQUERADE
-    SHELL
+    balanceador.vm.synced_folder ".", "/vagrant", disabled: true
+    balanceador.vm.provider :libvirt do |libvirt|
+      libvirt.memory = 512
+      libvirt.cpus = 1
+    end
   end
   config.vm.define :apache1 do |apache1|
     apache1.vm.box = "debian/bookworm64"
@@ -24,14 +25,11 @@ config.vm.define :balanceador do |balanceador|
           :libvirt__dhcp_enabled => false,
           :ip => "10.10.10.11",
           :libvirt__forward_mode => "veryisolated"
-    apache1.vm.provision "shell", run: "always", inline: <<-SHELL
-        ip r del default
-        ip r add default via 10.10.10.1
-	      apt-get update && apt-get upgrade -y
-	      apt-get install apache2 php libapache2-mod-php -y
-        cp /vagrant/ficheros/index1.html /var/www/html/index.html
-        cp /vagrant/ficheros/sesion.php /var/www/html/
-    SHELL
+    apache1.vm.synced_folder ".", "/vagrant", disabled: true
+    apache1.vm.provider :libvirt do |libvirt|
+      libvirt.memory = 512
+      libvirt.cpus = 1
+    end
   end
 
   config.vm.define :apache2 do |apache2|
@@ -42,15 +40,11 @@ config.vm.define :balanceador do |balanceador|
           :libvirt__dhcp_enabled => false,
           :ip => "10.10.10.22",
           :libvirt__forward_mode => "veryisolated"
-    apache2.vm.provision "shell", run: "always", inline: <<-SHELL
-        ip r del default
-        ip r add default via 10.10.10.1
-	      apt-get update && apt-get upgrade -y
-	      apt-get install apache2 php libapache2-mod-php -y
-        cp /vagrant/ficheros/index2.html /var/www/html/index.html
-        cp /vagrant/ficheros/sesion.php /var/www/html/
-  
-	  SHELL
+    apache2.vm.synced_folder ".", "/vagrant", disabled: true
+    apache2.vm.provider :libvirt do |libvirt|
+      libvirt.memory = 512
+      libvirt.cpus = 1
+    end
   end
   
 end

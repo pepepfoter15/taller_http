@@ -31,10 +31,6 @@ config.vm.define :balanceador do |balanceador|
           :ip => "192.168.100.11",
           :libvirt__forward_mode => "veryisolated"
     apache1.vm.synced_folder ".", "/vagrant", disabled: true
-    #apache1.vm.provision "shell", run: "always", inline: <<-SHELL
-	  #    apt-get update && apt-get upgrade -y
-	  #    apt-get install apache2 php libapache2-mod-php -y
-    #SHELL
     apache1.vm.provider :libvirt do |libvirt|
       libvirt.memory = 512
       libvirt.cpus = 1
@@ -55,10 +51,6 @@ config.vm.define :balanceador do |balanceador|
           :ip => "192.168.100.22",
           :libvirt__forward_mode => "veryisolated"
     apache2.vm.synced_folder ".", "/vagrant", disabled: true
-    #apache2.vm.provision "shell", run: "always", inline: <<-SHELL
-	  #    apt-get update && apt-get upgrade -y
-	  #    apt-get install apache2 php libapache2-mod-php -y
-    #SHELL
     apache2.vm.provider :libvirt do |libvirt|
       libvirt.memory = 512
       libvirt.cpus = 1
