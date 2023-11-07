@@ -28,13 +28,13 @@ config.vm.define :balanceador do |balanceador|
     apache1.vm.network :private_network,
           :libvirt__network_name => "red_datos",
           :libvirt__dhcp_enabled => false,
-          :ip => "192.168.168.11",
+          :ip => "192.168.100.11",
           :libvirt__forward_mode => "veryisolated"
     apache1.vm.synced_folder ".", "/vagrant", disabled: true
-    apache1.vm.provision "shell", run: "always", inline: <<-SHELL
-	      apt-get update && apt-get upgrade -y
-	      apt-get install apache2 php libapache2-mod-php -y
-    SHELL
+    #apache1.vm.provision "shell", run: "always", inline: <<-SHELL
+	  #    apt-get update && apt-get upgrade -y
+	  #    apt-get install apache2 php libapache2-mod-php -y
+    #SHELL
     apache1.vm.provider :libvirt do |libvirt|
       libvirt.memory = 512
       libvirt.cpus = 1
@@ -52,37 +52,14 @@ config.vm.define :balanceador do |balanceador|
     apache2.vm.network :private_network,
           :libvirt__network_name => "red_datos",
           :libvirt__dhcp_enabled => false,
-          :ip => "192.168.168.22",
+          :ip => "192.168.100.22",
           :libvirt__forward_mode => "veryisolated"
     apache2.vm.synced_folder ".", "/vagrant", disabled: true
-    apache2.vm.provision "shell", run: "always", inline: <<-SHELL
-	      apt-get update && apt-get upgrade -y
-	      apt-get install apache2 php libapache2-mod-php -y
-    SHELL
+    #apache2.vm.provision "shell", run: "always", inline: <<-SHELL
+	  #    apt-get update && apt-get upgrade -y
+	  #    apt-get install apache2 php libapache2-mod-php -y
+    #SHELL
     apache2.vm.provider :libvirt do |libvirt|
-      libvirt.memory = 512
-      libvirt.cpus = 1
-    end
-  end
-  config.vm.define :apache3 do |apache3|
-    apache3.vm.box = "debian/bookworm64"
-    apache3.vm.hostname = "apache3"
-    apache3.vm.network :private_network,
-          :libvirt__network_name => "red_privada1",
-          :libvirt__dhcp_enabled => false,
-          :ip => "10.10.10.22",
-          :libvirt__forward_mode => "veryisolated"
-    apache3.vm.network :private_network,
-          :libvirt__network_name => "red_datos",
-          :libvirt__dhcp_enabled => false,
-          :ip => "192.168.168.33",
-          :libvirt__forward_mode => "veryisolated"
-    apache3.vm.synced_folder ".", "/vagrant", disabled: true
-    apache3.vm.provision "shell", run: "always", inline: <<-SHELL
-	      apt-get update && apt-get upgrade -y
-	      apt-get install apache2 php libapache2-mod-php -y
-    SHELL
-    apache3.vm.provider :libvirt do |libvirt|
       libvirt.memory = 512
       libvirt.cpus = 1
     end
@@ -93,12 +70,9 @@ config.vm.define :balanceador do |balanceador|
     san.vm.network :private_network,
           :libvirt__network_name => "red_datos",
           :libvirt__dhcp_enabled => false,
-          :ip => "192.168.168.100",
+          :ip => "192.168.100.100",
           :libvirt__forward_mode => "veryisolated"
     san.vm.synced_folder ".", "/vagrant", disabled: true
-    san.vm.provision "shell", run: "always", inline: <<-SHELL
-	      apt-get update && apt-get upgrade -y
-    SHELL
     san.vm.provider :libvirt do |libvirt|
       libvirt.memory = 512
       libvirt.cpus = 1
