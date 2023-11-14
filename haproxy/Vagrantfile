@@ -1,0 +1,64 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure("2") do |config|
+config.vm.define :balanceador do |balanceador|
+    balanceador.vm.box = "debian/bookworm64"
+    balanceador.vm.hostname = "balanceador"
+    balanceador.vm.network :private_network,
+          :libvirt__network_name => "red_privada1",
+          :libvirt__dhcp_enabled => false,
+          :ip => "10.10.10.1",
+          :libvirt__forward_mode => "veryisolated"
+    balanceador.vm.synced_folder ".", "/vagrant", disabled: true
+    balanceador.vm.provider :libvirt do |libvirt|
+      libvirt.memory = 512
+      libvirt.cpus = 1
+    end
+    balanceador.vm.provision "shell", run: "always", inline: <<-SHELL
+        apt-get update && apt-get upgrade -y
+        apt-get install haproxy -y
+      SHELL
+  end
+  config.vm.define :apache1 do |apache1|
+    apache1.vm.box = "debian/bookworm64"
+    apache1.vm.hostname = "apache1"
+    apache1.vm.network :private_network,
+          :libvirt__network_name => "red_privada1",
+          :libvirt__dhcp_enabled => false,
+          :ip => "10.10.10.11",
+          :libvirt__forward_mode => "veryisolated"
+    apache1.vm.synced_folder ".", "/vagrant", disabled: true
+    apache1.vm.provider :libvirt do |libvirt|
+      libvirt.memory = 512
+      libvirt.cpus = 1
+    end
+    apache1.vm.provision "shell", run: "always", inline: <<-SHELL
+        apt-get update && apt-get upgrade -y
+        apt-get install apache2 -y
+        cp /vagrant/ficheros/index_apache1.html /var/www/html
+      SHELL
+  end
+
+  config.vm.define :apache2 do |apache2|
+    apache2.vm.box = "debian/bookworm64"
+    apache2.vm.hostname = "apache2"
+    apache2.vm.network :private_network,
+          :libvirt__network_name => "red_privada1",
+          :libvirt__dhcp_enabled => false,
+          :ip => "10.10.10.22",
+          :libvirt__forward_mode => "veryisolated"
+    apache2.vm.synced_folder ".", "/vagrant", disabled: true
+    apache2.vm.provider :libvirt do |libvirt|
+      libvirt.memory = 512
+      libvirt.cpus = 1
+    end
+    apache2.vm.provision "shell", run: "always", inline: <<-SHELL
+        apt-get update && apt-get upgrade -y
+        apt-get install apache2 -y
+        cp /vagrant/ficheros/index_apache2.html /var/www/html
+      SHELL
+  end
+  
+end
