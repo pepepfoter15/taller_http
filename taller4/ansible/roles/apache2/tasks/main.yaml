@@ -1,4 +1,4 @@
-- name: Install apache2
+- name: Install LAMP
   apt:
     pkg: 
     - apache2
@@ -14,10 +14,10 @@
     group: www-data
     mode: 0644
 
-- name: Copy sesion.php
+- name: Copy app.php
   copy:
-    src: sesion.php
-    dest: /var/www/html/sesion.php
+    src: app.php
+    dest: /var/www/html/app.php
     owner: www-data
     group: www-data
     mode: 0644

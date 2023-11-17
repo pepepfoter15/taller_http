@@ -1,0 +1,6 @@
+<?php
+     header('Content-Type: text/plain');
+     echo "Processing started\n";
+     sleep(2);  // Simulating a long-running operation
+     echo "Processing complete\n";
+?>
