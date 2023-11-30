@@ -3,43 +3,45 @@
 
 
 Vagrant.configure("2") do |config|
-  config.vm.define :frontend do |frontend|
-      frontend.vm.box = "debian/bookworm64"
-      frontend.vm.hostname = "frontend"
-      frontend.vm.network :private_network,
+  config.vm.define :balanceador do |balanceador|
+      balanceador.vm.box = "debian/bookworm64"
+      balanceador.vm.hostname = "balanceador"
+      balanceador.vm.network :private_network,
             :libvirt__network_name => "red_privada1",
             :libvirt__dhcp_enabled => false,
-            :ip => "10.10.10.1",
+            :ip => "192.168.100.1",
             :libvirt__forward_mode => "veryisolated"
-      frontend.vm.synced_folder ".", "/vagrant", disabled: true
-      frontend.vm.provider :libvirt do |libvirt|
+      balanceador.vm.synced_folder ".", "/vagrant", disabled: true
+      balanceador.vm.provider :libvirt do |libvirt|
         libvirt.memory = 512
         libvirt.cpus = 1
       end
     end
-    config.vm.define :backend1 do |backend1|
-      backend1.vm.box = "debian/bookworm64"
-      backend1.vm.hostname = "backend1"
-      backend1.vm.network :private_network,
+    config.vm.define :apache1 do |apache1|
+      apache1.vm.box = "debian/bookworm64"
+      apache1.vm.hostname = "apache1"
+      apache1.vm.network :private_network,
             :libvirt__network_name => "red_privada1",
             :libvirt__dhcp_enabled => false,
-            :ip => "10.10.10.11",
+            :ip => "192.168.100.100",
             :libvirt__forward_mode => "veryisolated"
-      backend1.vm.provider :libvirt do |libvirt|
+      apache1.vm.synced_folder ".", "/vagrant", disabled: true
+      apache1.vm.provider :libvirt do |libvirt|
         libvirt.memory = 512
         libvirt.cpus = 1
       end
     end
   
-    config.vm.define :backend2 do |backend2|
-      backend2.vm.box = "debian/bookworm64"
-      backend2.vm.hostname = "backend2"
-      backend2.vm.network :private_network,
+    config.vm.define :apache2 do |apache2|
+      apache2.vm.box = "debian/bookworm64"
+      apache2.vm.hostname = "apache2"
+      apache2.vm.network :private_network,
             :libvirt__network_name => "red_privada1",
             :libvirt__dhcp_enabled => false,
-            :ip => "10.10.10.22",
+            :ip => "192.168.100.101",
             :libvirt__forward_mode => "veryisolated"
-      backend2.vm.provider :libvirt do |libvirt|
+      apache2.vm.synced_folder ".", "/vagrant", disabled: true
+      apache2.vm.provider :libvirt do |libvirt|
         libvirt.memory = 512
         libvirt.cpus = 1
       end
