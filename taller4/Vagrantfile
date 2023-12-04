@@ -35,5 +35,15 @@ Vagrant.configure("2") do |config|
             :libvirt__forward_mode => "veryisolated"
     end
     
+    config.vm.define :apache3 do |apache3|
+      apache3.vm.synced_folder ".", "/vagrant", disabled: true
+      apache3.vm.box = "debian/bookworm64"
+      apache3.vm.hostname = "apache3"
+      apache3.vm.network :private_network,
+            :libvirt__network_name => "red_privada1",
+            :libvirt__dhcp_enabled => false,
+            :ip => "192.168.100.102",
+            :libvirt__forward_mode => "veryisolated"
+    end
     
   end
